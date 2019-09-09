@@ -8,13 +8,17 @@ import com.example.notas.adapters.dbAdapter
 import com.example.notas.goToActivity
 import com.example.notas.models.Notes
 import android.content.Intent
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_list_notes.*
 import kotlinx.android.synthetic.main.content_list_notes.*
+import kotlin.collections.ArrayList
 
 
 class ListNotesActivity : AppCompatActivity() {
     private lateinit var adapter: NoteAdapter
     private lateinit var noteList: List<Notes>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_notes)
@@ -26,18 +30,26 @@ class ListNotesActivity : AppCompatActivity() {
             goToActivity<AddNotes> {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-
         }
-        ListViewNotes.setOnItemClickListener { _, _, position, _ ->
-            val id = getNotes().get(position).id.toString()
-            val title: String = getNotes().get(position).title.toString()
-            val description: String = getNotes().get(position).description.toString()
-            val intent = Intent(this, UpdateActivity::class.java)
-            intent.putExtra("id", "$id")
-            intent.putExtra("title", "$title")
-            intent.putExtra("description", "$description")
-            startActivity(intent)
+        ListViewNotes.setOnItemLongClickListener { parent, view, position, id ->
 
+            val builder = AlertDialog.Builder(this@ListNotesActivity)
+            val items = arrayOf("Editar", "Eliminar")
+            with(builder)
+            {
+                setTitle("Acciones")
+                setItems(items) { dialog, which ->
+                    if(items[which]==="Eliminar"){
+                        getDeleteNote(getNotes().get(position).id)
+                    }else{
+                        getUpdate(getNotes().get(position))
+                    }
+                }
+                show()
+            }
+
+
+            true
         }
 
 
@@ -49,6 +61,22 @@ class ListNotesActivity : AppCompatActivity() {
         noteList = getNotes()
         ListViewNotes.adapter = adapter
 
+    }
+
+    fun getDeleteNote(notes: Int){
+        val dbHandler = dbAdapter(this, null)
+        dbHandler.deleteNotes(notes)
+        mostrarnotas()
+        Toast.makeText(this, " SE ELIMINO EL DATO CORRECTAMENTE", Toast.LENGTH_LONG).show()
+    }
+
+    fun getUpdate(note: Notes){
+
+       val intent = Intent(this, UpdateActivity::class.java)
+        intent.putExtra("id", "${note.id}")
+        intent.putExtra("title", "${note.title}")
+        intent.putExtra("description", "${note.description}")
+        startActivity(intent)
     }
 
     private fun getNotes(): ArrayList<Notes> {

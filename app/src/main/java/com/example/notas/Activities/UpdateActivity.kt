@@ -23,14 +23,7 @@ class UpdateActivity : AppCompatActivity() {
 
         TitleUpd.setText(titleExtra.toString())
         DescriptionUpd.setText(DescExtre.toString())
-        buttonDelUpd.setOnClickListener {
-            val dbHandler = dbAdapter(this, null)
-            dbHandler.deleteNotes(idExtra.toInt())
-            goToActivity<ListNotesActivity> {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            Toast.makeText(this, " SE ELIMINO EL DATO CORRECTAMENTE", Toast.LENGTH_LONG).show()
-        }
+
         buttonUpd.setOnClickListener {
             val title = TitleUpd.text.toString()
             val description = DescriptionUpd.text.toString()
