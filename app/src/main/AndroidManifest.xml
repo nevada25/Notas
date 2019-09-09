@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.UpdateActivity"></activity>
+        <activity android:name=".Activities.ViewNotesActivity"></activity>
+        <activity android:name=".Activities.UpdateActivity" />
         <activity
             android:name=".Activities.ListNotesActivity"
             android:label="@string/title_activity_list_notes"
@@ -21,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.AddNotes" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

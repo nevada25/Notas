@@ -28,7 +28,9 @@ class ListNotesActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         mostrarnotas()
 
-
+        ListViewNotes.setOnItemClickListener { parent, view, position, id ->
+            getView(getNotes().get(position))
+        }
         fab.setOnClickListener {
             goToActivity<AddNotes> {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -107,6 +109,15 @@ class ListNotesActivity : AppCompatActivity() {
         intent.putExtra("description", "${note.description}")
         startActivity(intent)
     }
+
+    fun getView(note: Notes){
+        val intent = Intent(this, ViewNotesActivity::class.java)
+        intent.putExtra("id", "${note.id}")
+        intent.putExtra("title", "${note.title}")
+        intent.putExtra("description", "${note.description}")
+        startActivity(intent)
+    }
+
 
     private fun getNotes(): ArrayList<Notes> {
         val dbHandler = dbAdapter(this, null)
