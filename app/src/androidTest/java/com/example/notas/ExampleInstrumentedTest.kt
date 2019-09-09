@@ -1,6 +1,6 @@
 package com.example.notas
 
-import androidx.test.platform.app.InstrumentationRegistry 
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 
 import org.junit.Test
